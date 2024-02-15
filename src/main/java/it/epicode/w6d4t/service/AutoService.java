@@ -70,4 +70,11 @@ public class AutoService {
         autoRepository.delete(auto);
     }
 
+    public Auto uploadLogo(int id, String url) throws NotFoundException{
+        Auto auto = getAutoById(id);
+
+        auto.setLogo(url);
+        return autoRepository.save(auto);
+    }
+
 }

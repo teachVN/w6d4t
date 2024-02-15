@@ -1,6 +1,7 @@
 package it.epicode.w6d4t.controller;
 
 
+import com.cloudinary.Cloudinary;
 import it.epicode.w6d4t.exception.BadRequestException;
 import it.epicode.w6d4t.exception.NotFoundException;
 import it.epicode.w6d4t.model.Auto;
@@ -17,11 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 @RestController
 public class AutoController {
     @Autowired
     private AutoService autoService;
+    @Autowired
+    private Cloudinary cloudinary;
 
     @GetMapping("/auto")
     public ResponseEntity<CustomResponse> getAll(Pageable pageable){
@@ -91,6 +95,16 @@ public class AutoController {
                 return CustomResponse.error(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
+    }
+    @PatchMapping("/auto/{id}/upload")
+    public ResponseEntity<CustomResponse> uploadLogo(@PathVariable int id,@RequestParam("upload") MultipartFile file){
+        try {
+            Auto auto = autoService.uploadLogo(id, (String)cloudinary.uploader().upload(file.getBytes(), new HashMap()).get("url"));
+            return CustomResponse.success(HttpStatus.OK.toString(), auto, HttpStatus.OK);
+        }
+        catch (IOException e){
+            return CustomResponse.error(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 
