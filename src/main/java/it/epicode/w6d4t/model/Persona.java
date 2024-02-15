@@ -19,6 +19,9 @@ public class Persona {
     private String indirizzo;
     private LocalDate dataNascita;
 
+    @Column(unique = true)
+    private String email;
+
     @JsonIgnore
     @OneToMany(mappedBy = "persona")
     private List<Auto> auto;

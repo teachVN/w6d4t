@@ -1,5 +1,6 @@
 package it.epicode.w6d4t.model;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -18,4 +19,6 @@ public class PersonaRequest {
     @NotNull(message = "data nascita obbligatorio")
     //@NotEmpty(message = "data nascita non vuoto")
     private LocalDate dataNascita;
+    @Email(message = "Inserire email valida")
+    private String email;
 }
